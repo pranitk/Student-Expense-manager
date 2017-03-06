@@ -1,0 +1,47 @@
+<resources>
+    <string name="app_name">Expense Manager</string>
+    <string name="font_awesome">fonts/fontawesome-webfont.ttf</string>
+    <string name="Open_sans">fonts/OpenSans-Light.ttf</string>
+    <string name="Open_regular">fonts/OpenSans-Regular.ttf</string>
+    <string name="date_format">dd-MM-yyyy</string>
+
+    <string name="icon_cash">&#xf0d6;</string>
+    <string name="icon_card">&#xf09d;</string>
+    <string name="ic_shopping">&#xf07a;</string>
+    <string name="ic_electronics">&#xf109;</string>
+    <string name="ic_home">&#xf109;</string>
+    <string name="ic_health">&#xf004;</string>
+    <string name="ic_transportation">&#xf072;</string>
+    <string name="ic_wifi">&#xf1eb;</string>
+    <string name="ic_taxi">&#xf1ba;</string>
+    <string name="ic_newspaper">&#xf1ea;</string>
+    <string name="ic_food">&#xf0f5;</string>
+    <string name="ic_education">&#xf19d;</string>
+
+    <string name="pref_create_categories">areExpenseCategoriesAdded</string>
+
+    <string-array name="categories">
+        <item>Shopping</item>
+        <item>Transportation</item>
+        <item>Taxi</item>
+        <item>Electronics</item>
+        <item>Food and Drinks</item>
+        <item>Education</item>
+        <item>Wifi</item>
+        <item>Health</item>
+        <item>Newspaper</item>
+    </string-array>
+
+    <string-array name="categories_icons">
+        <item>@string/ic_shopping</item>
+        <item>@string/ic_transportation</item>
+        <item>@string/ic_taxi</item>
+        <item>@string/ic_electronics</item>
+        <item>@string/ic_food</item>
+        <item>@string/ic_education</item>
+        <item>@string/ic_wifi</item>
+        <item>@string/ic_health</item>
+        <item>@string/ic_newspaper</item>
+    </string-array>
+
+</resources>

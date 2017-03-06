@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:background="@android:color/white"
+    android:layout_height="56dp">
+
+    <TextView
+        android:id="@+id/balance"
+        android:layout_marginRight="8dp"
+        android:layout_alignParentRight="true"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:textSize="24sp"
+        android:text="320"
+        android:textColor="@color/colorPrimary"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent" />
+
+    <TextView
+        android:id="@+id/currency"
+        android:layout_marginRight="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_toLeftOf="@id/balance"
+        android:text="$"
+        android:textColor="@color/colorPrimary"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:textSize="24sp"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent" />
+
+    <TextView
+        android:id="@+id/account_type_icon"
+        android:textSize="18sp"
+        android:gravity="center"
+        android:text="@string/icon_cash"
+        fontPath="@string/font_awesome"
+        android:layout_width="56dp"
+        android:layout_height="match_parent"
+        tools:ignore="MissingPrefix" />
+
+    <TextView
+        android:layout_marginLeft="8dp"
+        android:layout_toLeftOf="@id/currency"
+        android:id="@+id/account_name"
+        android:layout_toRightOf="@id/account_type_icon"
+        android:textSize="16sp"
+        android:gravity="center_vertical"
+        android:text="My Wallet"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+</RelativeLayout>
