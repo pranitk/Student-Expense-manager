@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:background="@android:color/white"
+    android:layout_height="wrap_content">
+
+
+    <!--
+    <LinearLayout
+        android:id="@+id/date_layout"
+        android:layout_centerVertical="true"
+        android:layout_alignParentRight="true"
+        android:orientation="vertical"
+        android:padding="6dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/day"
+            android:textColor="@color/grey_500"
+            android:textSize="18sp"
+            android:text="08"
+            android:gravity="center"
+            android:layout_gravity="center_horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+
+        <TextView
+            android:id="@+id/month"
+            android:textColor="@color/grey_500"
+            android:text="MAR"
+            android:textAllCaps="true"
+            android:gravity="center"
+            android:layout_gravity="center_horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+
+        <TextView
+            android:id="@+id/year"
+            android:textColor="@color/grey_500"
+            android:text="2017"
+            android:gravity="center"
+            android:layout_gravity="center_horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+    -->
+
+
+    <TextView
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="12dp"
+        android:id="@+id/date"
+        android:layout_alignParentRight="true"
+        android:text="32 MAR"
+        android:textAllCaps="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <LinearLayout
+        android:layout_marginLeft="12dp"
+        android:layout_marginTop="8dp"
+        android:layout_toLeftOf="@id/date"
+        android:id="@+id/amount_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+        <TextView
+            android:id="@+id/currency"
+            android:text="$"
+            android:textColor="@color/colorAccent"
+            android:gravity="center"
+            fontPath="@string/OpenSans_SemiBold"
+            tools:ignore="MissingPrefix"
+            android:textSize="24sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+
+
+        <TextView
+            android:id="@+id/amount"
+            android:layout_marginLeft="8dp"
+            android:gravity="center"
+            android:textSize="24sp"
+            android:text="4.48"
+            fontPath="@string/OpenSans_SemiBold"
+            android:textColor="@color/colorAccent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:ignore="MissingPrefix" />
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:id="@+id/desc_layout"
+        android:layout_below="@id/amount_layout"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+        <TextView
+            android:layout_margin="8dp"
+            android:layout_gravity="center_vertical"
+            android:id="@+id/category_icon"
+            android:textSize="18sp"
+            android:gravity="center"
+            android:text="@string/ic_food"
+            fontPath="@string/font_awesome"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:ignore="MissingPrefix" />
+
+
+        <LinearLayout
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:id="@+id/layout1"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+
+
+            <TextView
+                android:textSize="16sp"
+                android:id="@+id/expense_desc"
+                android:layout_marginTop="6dp"
+                android:text="McDonalds Burger"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+
+            <TextView
+                android:id="@+id/category_name"
+                android:textSize="12sp"
+                android:layout_marginTop="4dp"
+                android:text="FOODS AND DRINKS"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+    <View
+        android:layout_below="@id/desc_layout"
+        android:background="@color/grey_200"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"/>
+
+</RelativeLayout>

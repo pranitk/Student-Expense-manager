@@ -30,7 +30,8 @@
                 android:gravity="center_vertical"
                 android:text="ACCOUNTS"
                 android:padding="8dp"
-                android:textStyle="bold"
+                fontPath="@string/OpenSans_Bold"
+                tools:ignore="MissingPrefix"
                 android:textColor="@color/grey_800"
                 android:layout_width="match_parent"
                 android:layout_height="48dp" />
@@ -56,7 +57,8 @@
                 android:gravity="center_vertical"
                 android:text="EXPENSES"
                 android:padding="8dp"
-                android:textStyle="bold"
+                fontPath="@string/OpenSans_Bold"
+                tools:ignore="MissingPrefix"
                 android:textColor="@color/grey_800"
                 android:layout_width="match_parent"
                 android:layout_height="48dp" />

@@ -54,6 +54,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         String CREATE_EXPENSE_TABLE = "CREATE TABLE " + DatabaseInfo.Expenses.TABLE_NAME + "(" + DatabaseInfo.Expenses.ID + " INTEGER PRIMARY KEY,"
                 + DatabaseInfo.Expenses.AMOUNT + " FLOAT NOT NULL, "+ DatabaseInfo.Expenses.CATEGORY + " INTEGER, " + DatabaseInfo.Expenses.DESCRIPTION
                 + " TEXT,"+ DatabaseInfo.Expenses.ACCOUNT_ID +" INTEGER,"+ DatabaseInfo.Expenses.DATE +" DATE, "+
+                DatabaseInfo.Expenses.DAY + " INTEGER, " + DatabaseInfo.Expenses.MONTH + " INTEGER, "+ DatabaseInfo.Expenses.YEAR + " INTEGER, "+
                 DatabaseInfo.Expenses.CURRENCY_ID+" INTEGER"+
                 ", FOREIGN KEY (" + DatabaseInfo.Expenses.CATEGORY+") "+ "REFERENCES "+ DatabaseInfo.Expenses.TABLE_NAME + "(" + DatabaseInfo.ExpenseCategory.ID + ")"+
                 ", FOREIGN KEY (" + DatabaseInfo.Expenses.ACCOUNT_ID+") "+ "REFERENCES "+ DatabaseInfo.Accounts.TABLE_NAME + "(" + DatabaseInfo.Accounts.ID + "))";
@@ -84,7 +85,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public Boolean addExpense(ExpenseModel model){
 
-        Boolean saved = false;
+        Boolean saved;
 
         try {
 
@@ -96,7 +97,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             contentValues.put(DatabaseInfo.Expenses.DESCRIPTION,model.getDesc());
             contentValues.put(DatabaseInfo.Expenses.ACCOUNT_ID,model.getAccount_id());
             contentValues.put(DatabaseInfo.Expenses.CATEGORY,model.getCategory_id());
-            contentValues.put(DatabaseInfo.Expenses.DATE,String.valueOf(model.getDate()));
+            //contentValues.put(DatabaseInfo.Expenses.DATE,String.valueOf(model.getDate()));
+            contentValues.put(DatabaseInfo.Expenses.DAY,model.getDay());
+            contentValues.put(DatabaseInfo.Expenses.MONTH,model.getMonth());
+            contentValues.put(DatabaseInfo.Expenses.YEAR,model.getYear());
             contentValues.put(DatabaseInfo.Expenses.CURRENCY_ID,model.getCurrency_id());
 
 
@@ -253,14 +257,18 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             model.setCurrency_id(cursor.getInt(cursor.getColumnIndex(DatabaseInfo.Expenses.CURRENCY_ID)));
             model.setDesc(cursor.getString(cursor.getColumnIndex(DatabaseInfo.Expenses.DESCRIPTION)));
             model.setId(cursor.getInt(cursor.getColumnIndex(DatabaseInfo.Expenses.ID)));
-            String date = cursor.getString(cursor.getColumnIndex(DatabaseInfo.Expenses.DATE));
+            model.setDay(cursor.getInt(cursor.getColumnIndex(DatabaseInfo.Expenses.DAY)));
+            model.setMonth(cursor.getInt(cursor.getColumnIndex(DatabaseInfo.Expenses.MONTH)));
+            model.setYear(cursor.getInt(cursor.getColumnIndex(DatabaseInfo.Expenses.YEAR)));
+            /*String date = cursor.getString(cursor.getColumnIndex(DatabaseInfo.Expenses.DATE));
 
             try {
                 model.setDate(new SimpleDateFormat(context.getString(R.string.date_format)).parse(date));
             }
             catch (ParseException p){
                 p.printStackTrace();
-            }
+            }*/
+
             expenses.add(model);
         }
 

@@ -30,6 +30,10 @@ public final class DatabaseInfo {
         public static final String ACCOUNT_ID = "account_id";   // Paid by which account
         public static final String DATE = "date_of_expense";
         public static final String CURRENCY_ID = "currency_id";     // currency of expense
+        public static final String DAY = "expense_day";     // currency of expense
+        public static final String MONTH = "expense_month";     // currency of expense
+        public static final String YEAR = "expense_year";     // currency of expense
+
 
     }
 

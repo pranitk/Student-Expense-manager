@@ -3,6 +3,8 @@
     <string name="font_awesome">fonts/fontawesome-webfont.ttf</string>
     <string name="Open_sans">fonts/OpenSans-Light.ttf</string>
     <string name="Open_regular">fonts/OpenSans-Regular.ttf</string>
+    <string name="OpenSans_SemiBold">fonts/OpenSans-Semibold.ttf</string>
+    <string name="OpenSans_Bold">fonts/OpenSans-Bold.ttf</string>
     <string name="date_format">dd-MM-yyyy</string>
 
     <string name="icon_cash">&#xf0d6;</string>

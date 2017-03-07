@@ -124,8 +124,15 @@ public class AddExpense extends AppCompatActivity {
                         expense.setCategory_id(category_id);
                         expense.setCurrency_id(1);
                         expense.setDesc(descEt.getText().toString());
-                        String date = expense_day+"/"+(expense_month + 1)+"/"+expense_year;
-                        expense.setDate(new SimpleDateFormat("dd/MM/yyyy").parse(date));
+                        /*String date = expense_day+"/"+(expense_month + 1)+"/"+expense_year;
+                        expense.setDate(new SimpleDateFormat("dd/MM/yyyy").parse(date));*/
+
+                        Log.d("Day of expense",""+expense_day);
+                        Log.d("Year of expense",""+expense_year);
+
+                        expense.setDay(expense_day);
+                        expense.setMonth(expense_month+1);
+                        expense.setYear(expense_year);
 
                         if(databaseHelper.addExpense(expense))
                             finish();   // close page if expense is saved

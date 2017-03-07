@@ -12,7 +12,7 @@ public class ExpenseModel {
 
     private float amount = 0;
     private String desc = "";
-    private int category_id = 0,account_id = 0,currency_id=0,id=0;
+    private int category_id = 0,account_id = 0,currency_id=0,id=0,day=0,month=0,year=0;
     private Date date;
 
     public void setAmount(float amount) {
@@ -44,6 +44,18 @@ public class ExpenseModel {
         this.id = id;
     }
 
+    public void setDay(int day) {
+        this.day = day;
+    }
+
+    public void setMonth(int month) {
+        this.month = month;
+    }
+
+    public void setYear(int year) {
+        this.year = year;
+    }
+
     // --------- GET METHODS ------------------
 
 
@@ -73,5 +85,18 @@ public class ExpenseModel {
 
     public int getCurrency_id() {
         return currency_id;
+    }
+
+
+    public int getDay() {
+        return day;
+    }
+
+    public int getMonth() {
+        return month;
+    }
+
+    public int getYear() {
+        return year;
     }
 }

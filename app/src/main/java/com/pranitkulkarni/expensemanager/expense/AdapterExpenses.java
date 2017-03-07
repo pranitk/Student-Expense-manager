@@ -2,6 +2,7 @@ package com.pranitkulkarni.expensemanager.expense;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +10,8 @@ import android.widget.TextView;
 
 import com.pranitkulkarni.expensemanager.R;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 /**
@@ -20,6 +23,9 @@ public class AdapterExpenses  extends RecyclerView.Adapter<AdapterExpenses.myVie
     private List<ExpenseModel> list;
     private Context context;
 
+    private SimpleDateFormat monthFormat = new SimpleDateFormat("MMM");
+    private SimpleDateFormat systemFormat = new SimpleDateFormat("MM");
+
     public AdapterExpenses(Context context,List<ExpenseModel> list){
         this.list = list;
         this.context = context;
@@ -28,7 +34,7 @@ public class AdapterExpenses  extends RecyclerView.Adapter<AdapterExpenses.myVie
 
     @Override
     public AdapterExpenses.myViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new AdapterExpenses.myViewHolder(LayoutInflater.from(context).inflate(R.layout.expenses_list_item,parent,false));
+        return new AdapterExpenses.myViewHolder(LayoutInflater.from(context).inflate(R.layout.expenses_list_item_2,parent,false));
     }
 
 
@@ -38,7 +44,24 @@ public class AdapterExpenses  extends RecyclerView.Adapter<AdapterExpenses.myVie
         final ExpenseModel expense = list.get(position);
         holder.description.setText(expense.getDesc());
         holder.amount.setText(String.valueOf(expense.getAmount()));
-        //holder.categoryName.setText(expense.ge);
+
+
+        //holder.day.setText(String.valueOf(expense.getDay()));
+        //holder.year.setText(String.valueOf(expense.getYear()));
+
+        try {
+
+            String monthInWords = monthFormat.format(systemFormat.parseObject(String.valueOf(expense.getMonth())));
+            String day = String.valueOf(expense.getDay());
+            holder.date.setText(day+" "+monthInWords);
+            //holder.month.setText(monthInWords);
+
+        }catch (ParseException p){
+            p.printStackTrace();
+        }
+
+
+        // TODO Add account used....
     }
 
     @Override
@@ -48,7 +71,7 @@ public class AdapterExpenses  extends RecyclerView.Adapter<AdapterExpenses.myVie
 
     public static class myViewHolder extends RecyclerView.ViewHolder{
 
-        TextView categoryIcon,description,amount,currency,categoryName;
+        TextView categoryIcon,description,amount,currency,categoryName,date;//day,month,year;
 
         public myViewHolder(View itemView) {
 
@@ -58,6 +81,11 @@ public class AdapterExpenses  extends RecyclerView.Adapter<AdapterExpenses.myVie
             categoryIcon = (TextView)itemView.findViewById(R.id.category_icon);
             categoryName = (TextView)itemView.findViewById(R.id.category_name);
             description = (TextView)itemView.findViewById(R.id.expense_desc);
+            date = (TextView)itemView.findViewById(R.id.date);
+            /*
+            day = (TextView)itemView.findViewById(R.id.day);
+            month = (TextView)itemView.findViewById(R.id.month);
+            year = (TextView)itemView.findViewById(R.id.year);*/
 
         }
     }
