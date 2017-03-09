@@ -27,7 +27,7 @@ public class AddAccount extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_account);
+        setContentView(R.layout.activity_add_account_2);
 
 
         CalligraphyConfig.initDefault(new CalligraphyConfig.Builder().build());
@@ -56,6 +56,16 @@ public class AddAccount extends AppCompatActivity {
 
                     finish();
                 }
+
+            }
+        });
+
+
+        findViewById(R.id.close).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                finish();
 
             }
         });

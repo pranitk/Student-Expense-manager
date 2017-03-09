@@ -120,6 +120,7 @@
 
 
                 <LinearLayout
+                    android:id="@+id/add_income"
                     android:background="?attr/selectableItemBackground"
                     android:layout_width="match_parent"
                     android:layout_height="48dp">

@@ -20,7 +20,8 @@
         <activity
             android:name=".bank_accounts.SelectAccount"
             android:theme="@style/AppTheme" />
-        <activity android:name=".expense.SelectCategory"></activity>
+        <activity android:name=".expense.SelectCategory" />
+        <activity android:name=".transactions.AddIncome"></activity>
     </application>
 
 </manifest>

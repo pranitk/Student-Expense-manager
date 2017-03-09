@@ -9,6 +9,7 @@
 
     <string name="icon_cash">&#xf0d6;</string>
     <string name="icon_card">&#xf09d;</string>
+    <string name="icon_bank">&#xf19c;</string>
     <string name="ic_shopping">&#xf07a;</string>
     <string name="ic_electronics">&#xf109;</string>
     <string name="ic_home">&#xf109;</string>

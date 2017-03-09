@@ -42,12 +42,9 @@ public class AddExpense extends AppCompatActivity {
 
     int category_id = 0,account_id = 0,expense_year=0,expense_month=0,expense_day=0;
     String account_name = "",category_name = "",category_icon = "";
-    DatabaseHelper databaseHelper;
     TextView accountTv,dateTv,categoryTv;
     EditText amountEt,descEt;
     CoordinatorLayout coordinatorLayout;
-    List<AccountModel> accounts_list;
-    List<ExpenseCategoryModel> categories_list;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,7 +54,6 @@ public class AddExpense extends AppCompatActivity {
 
         CalligraphyConfig.initDefault(new CalligraphyConfig.Builder().setDefaultFontPath(getString(R.string.Open_regular)).build());
 
-        databaseHelper = new DatabaseHelper(AddExpense.this);
 
         coordinatorLayout = (CoordinatorLayout)findViewById(R.id.coordinatorLayout);
         descEt = (EditText)findViewById(R.id.expense_desc);
@@ -68,27 +64,18 @@ public class AddExpense extends AppCompatActivity {
 
         //expense_date = new SimpleDateFormat("dd-MM-yyyy").format(new Date());
 
-        accounts_list = databaseHelper.getAllAccounts();    // Get all accounts from DB
 
         findViewById(R.id.select_account).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                //showAllAccounts();
-
                 startActivityForResult(new Intent(AddExpense.this, SelectAccount.class),1);
-
             }
         });
 
 
-        categories_list = databaseHelper.getAllCategories();
-
         findViewById(R.id.select_category).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                //showAllCategories();
                 startActivityForResult(new Intent(AddExpense.this, SelectCategory.class),2);
 
             }
@@ -117,6 +104,8 @@ public class AddExpense extends AppCompatActivity {
 
                     try
                     {
+
+                        final DatabaseHelper databaseHelper = new DatabaseHelper(AddExpense.this);
 
                         ExpenseModel expense = new ExpenseModel();
                         expense.setAccount_id(account_id);

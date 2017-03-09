@@ -25,6 +25,7 @@ import com.pranitkulkarni.expensemanager.expense.AdapterExpenses;
 import com.pranitkulkarni.expensemanager.expense.AddExpense;
 import com.pranitkulkarni.expensemanager.expense.ExpenseCategoryModel;
 import com.pranitkulkarni.expensemanager.expense.ExpenseModel;
+import com.pranitkulkarni.expensemanager.transactions.AddIncome;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,7 +35,10 @@ import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class MainActivity extends AppCompatActivity {
 
+    RecyclerView recyclerView;
     DatabaseHelper databaseHelper;
+    AdapterAccounts adapterAccounts;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,16 +72,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });*/
 
-        final List<AccountModel> accounts = databaseHelper.getAllAccounts();
-
-        for (int i=0; i < accounts.size(); i++){
-
-            AccountModel account = accounts.get(i);
-            Log.d("Acc "+i," Name - "+account.getName());
-            Log.d("Acc "+i," Balance - "+account.getBalance());
-            Log.d("Acc "+i," Type - "+account.getType());
-
-        }
 
         SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
 
@@ -87,12 +81,8 @@ public class MainActivity extends AppCompatActivity {
         else
             Log.d("Categories"," already created...");
 
-        RecyclerView recyclerView = (RecyclerView)findViewById(R.id.recyclerView);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(new AdapterAccounts(this,accounts));
 
 
-        new GetAllExpenses().execute();
 
         findViewById(R.id.add_account).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -110,8 +100,48 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(new Intent(MainActivity.this,AddExpense.class));
             }
         });
-}
 
+        findViewById(R.id.add_income).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                startActivity(new Intent(MainActivity.this,AddIncome.class));
+            }
+        });
+
+    }
+
+
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+
+        final List<AccountModel> accounts = databaseHelper.getAllAccounts();
+
+        for (int i=0; i < accounts.size(); i++){
+
+            AccountModel account = accounts.get(i);
+            Log.d("Acc "+i," Name - "+account.getName());
+            Log.d("Acc "+i," Balance - "+account.getBalance());
+            Log.d("Acc "+i," Type - "+account.getType());
+
+        }
+
+
+        recyclerView = (RecyclerView)findViewById(R.id.recyclerView);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        adapterAccounts = new AdapterAccounts(this,accounts);
+        recyclerView.setAdapter(adapterAccounts);
+
+
+        new GetAllExpenses().execute();
+
+       // adapterAccounts.notifyDataSetChanged();
+       // recyclerView.setAdapter(adapterAccounts);
+
+    }
 
     private class GetAllExpenses extends AsyncTask<Void,Void,Boolean>{
 

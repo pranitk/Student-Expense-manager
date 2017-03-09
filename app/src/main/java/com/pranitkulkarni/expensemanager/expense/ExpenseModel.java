@@ -2,6 +2,8 @@ package com.pranitkulkarni.expensemanager.expense;
 
 import android.util.Log;
 
+import com.pranitkulkarni.expensemanager.bank_accounts.AccountModel;
+
 import java.util.Date;
 
 /**
@@ -14,6 +16,8 @@ public class ExpenseModel {
     private String desc = "";
     private int category_id = 0,account_id = 0,currency_id=0,id=0,day=0,month=0,year=0;
     private Date date;
+    private AccountModel accountModel;
+    private ExpenseCategoryModel expenseCategoryModel;
 
     public void setAmount(float amount) {
         this.amount = amount;
@@ -54,6 +58,14 @@ public class ExpenseModel {
 
     public void setYear(int year) {
         this.year = year;
+    }
+
+    public void setAccountModel(AccountModel accountModel) {
+        this.accountModel = accountModel;
+    }
+
+    public void setExpenseCategoryModel(ExpenseCategoryModel expenseCategoryModel) {
+        this.expenseCategoryModel = expenseCategoryModel;
     }
 
     // --------- GET METHODS ------------------
@@ -98,5 +110,14 @@ public class ExpenseModel {
 
     public int getYear() {
         return year;
+    }
+
+
+    public AccountModel getAccountModel() {
+        return accountModel;
+    }
+
+    public ExpenseCategoryModel getExpenseCategoryModel() {
+        return expenseCategoryModel;
     }
 }

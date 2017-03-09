@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.pranitkulkarni.expensemanager.R;
+import com.pranitkulkarni.expensemanager.bank_accounts.AccountModel;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -60,8 +61,21 @@ public class AdapterExpenses  extends RecyclerView.Adapter<AdapterExpenses.myVie
             p.printStackTrace();
         }
 
+        final AccountModel accountDetails = expense.getAccountModel();
 
-        // TODO Add account used....
+        String icon = context.getString(R.string.icon_card);
+
+        if (accountDetails.getType() == 1)
+            icon = context.getString(R.string.icon_cash);
+
+        holder.accountIcon.setText(icon);
+        holder.accountName.setText(accountDetails.getName());
+
+        final ExpenseCategoryModel categoryDetails = expense.getExpenseCategoryModel();
+
+        holder.categoryName.setText(categoryDetails.getName());
+        holder.categoryIcon.setText(categoryDetails.getIcon());
+
     }
 
     @Override
@@ -72,6 +86,7 @@ public class AdapterExpenses  extends RecyclerView.Adapter<AdapterExpenses.myVie
     public static class myViewHolder extends RecyclerView.ViewHolder{
 
         TextView categoryIcon,description,amount,currency,categoryName,date;//day,month,year;
+        TextView accountName,accountIcon;
 
         public myViewHolder(View itemView) {
 
@@ -82,6 +97,9 @@ public class AdapterExpenses  extends RecyclerView.Adapter<AdapterExpenses.myVie
             categoryName = (TextView)itemView.findViewById(R.id.category_name);
             description = (TextView)itemView.findViewById(R.id.expense_desc);
             date = (TextView)itemView.findViewById(R.id.date);
+
+            accountIcon = (TextView)itemView.findViewById(R.id.account_type_icon);
+            accountName = (TextView)itemView.findViewById(R.id.account_name);
             /*
             day = (TextView)itemView.findViewById(R.id.day);
             month = (TextView)itemView.findViewById(R.id.month);
