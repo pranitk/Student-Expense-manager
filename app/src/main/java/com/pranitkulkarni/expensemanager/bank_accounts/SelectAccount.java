@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,7 +28,7 @@ public class SelectAccount extends AppCompatActivity {
 
     int account_id = 0;
     String account_name = "";
-    //RecyclerView recyclerView;
+    RecyclerView recyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,12 +37,27 @@ public class SelectAccount extends AppCompatActivity {
 
         CalligraphyConfig.initDefault(new CalligraphyConfig.Builder().build());
 
-        RecyclerView recyclerView = (RecyclerView)findViewById(R.id.recyclerView);
-
-        DatabaseHelper databaseHelper = new DatabaseHelper(SelectAccount.this);
-
+        recyclerView = (RecyclerView)findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(SelectAccount.this));
-        recyclerView.setAdapter(new AdapterSelectAccount(SelectAccount.this,databaseHelper.getAllAccounts()));
+
+        getAllAccounts();
+
+        findViewById(R.id.close).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                finish();
+            }
+        });
+
+        findViewById(R.id.add_new).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                startActivityForResult(new Intent(SelectAccount.this,AddAccount.class),1);
+
+            }
+        });
     }
 
     class AdapterSelectAccount extends RecyclerView.Adapter<AdapterSelectAccount.myViewHolder>{
@@ -115,6 +131,28 @@ public class SelectAccount extends AppCompatActivity {
         }
     }
 
+
+    private void getAllAccounts(){
+
+        DatabaseHelper databaseHelper = new DatabaseHelper(SelectAccount.this);
+        recyclerView.setAdapter(new AdapterSelectAccount(SelectAccount.this,databaseHelper.getAllAccounts()));
+
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        Log.d("onActivityResult", " called ....");
+
+        if (requestCode == 1) {
+
+            if (resultCode == Activity.RESULT_OK)
+                getAllAccounts();
+
+        }
+
+    }
 
     @Override
     protected void attachBaseContext(Context tp) {

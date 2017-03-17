@@ -21,7 +21,11 @@
             android:name=".bank_accounts.SelectAccount"
             android:theme="@style/AppTheme" />
         <activity android:name=".expense.SelectCategory" />
-        <activity android:name=".transactions.AddIncome"></activity>
+        <activity android:name=".transactions.AddIncome" />
+        <activity
+            android:name=".bank_accounts.ShowAllAccounts"
+            android:label="@string/title_activity_show_all_accounts"
+            android:theme="@style/AppTheme"></activity>
     </application>
 
 </manifest>

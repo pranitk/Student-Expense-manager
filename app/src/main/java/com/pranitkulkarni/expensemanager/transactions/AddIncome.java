@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import com.pranitkulkarni.expensemanager.MyValidator;
@@ -96,7 +97,9 @@ public class AddIncome extends AppCompatActivity {
                         transaction.setDescription(descEt.getText().toString());
                         transaction.setReceiver_id(account_id);
                         transaction.setSender_id(0);
-                        transaction.setRepeat(false);
+
+                        Switch repeatSwitch = (Switch)findViewById(R.id.switchRepeat);
+                        transaction.setRepeat(repeatSwitch.isChecked());    // TODO SET ACTION FOR REPEATING TRANSACTIONS
 
                         String date = transaction_day+"-"+(transaction_month+1)+"-"+transaction_year;
                         transaction.setDate_of_transaction(new SimpleDateFormat("dd-MM-yyyy").parse(date));

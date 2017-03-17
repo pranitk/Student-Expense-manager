@@ -181,9 +181,19 @@
                 android:layout_height="1dp"/>
             
             <Switch
+                android:id="@+id/switchRepeat"
+                android:textColor="@color/grey_800"
+                android:textSize="16sp"
+                android:text="Repeat every month"
+                android:padding="8dp"
                 android:layout_width="match_parent"
                 android:layout_height="48dp" />
 
+
+            <View
+                android:background="@color/grey_300"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"/>
 
         </LinearLayout>
 

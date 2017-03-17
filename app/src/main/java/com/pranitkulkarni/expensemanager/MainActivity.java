@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -28,6 +29,7 @@ import com.pranitkulkarni.expensemanager.expense.ExpenseModel;
 import com.pranitkulkarni.expensemanager.transactions.AddIncome;
 
 import java.util.ArrayList;
+import java.util.Currency;
 import java.util.List;
 
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
@@ -35,9 +37,7 @@ import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class MainActivity extends AppCompatActivity {
 
-    RecyclerView recyclerView;
     DatabaseHelper databaseHelper;
-    AdapterAccounts adapterAccounts;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +46,6 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        //CalligraphyConfig.initDefault(new CalligraphyConfig.Builder().build());
 
         CalligraphyConfig.initDefault(new CalligraphyConfig.Builder().setDefaultFontPath(getString(R.string.Open_regular)).build());
 
@@ -62,6 +61,10 @@ public class MainActivity extends AppCompatActivity {
 
 
         databaseHelper = new DatabaseHelper(this);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            Log.d("Available currencies - ",Currency.getAvailableCurrencies().toString());
+        }
 
         /*findViewById(R.id.fab).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -82,6 +85,7 @@ public class MainActivity extends AppCompatActivity {
             Log.d("Categories"," already created...");
 
 
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer,new FragmentHome()).commit();
 
 
         findViewById(R.id.add_account).setOnClickListener(new View.OnClickListener() {
@@ -130,6 +134,8 @@ public class MainActivity extends AppCompatActivity {
         }
 
 
+        /*
+
         recyclerView = (RecyclerView)findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         adapterAccounts = new AdapterAccounts(this,accounts);
@@ -137,6 +143,9 @@ public class MainActivity extends AppCompatActivity {
 
 
         new GetAllExpenses().execute();
+
+
+        */
 
        // adapterAccounts.notifyDataSetChanged();
        // recyclerView.setAdapter(adapterAccounts);

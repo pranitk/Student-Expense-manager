@@ -1,6 +1,7 @@
 package com.pranitkulkarni.expensemanager.bank_accounts;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -54,6 +55,7 @@ public class AddAccount extends AppCompatActivity {
 
                     new DatabaseHelper(AddAccount.this).addAccount(account);    // Add entry to database
 
+                    setResult(RESULT_OK);
                     finish();
                 }
 

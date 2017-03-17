@@ -18,6 +18,7 @@ import com.pranitkulkarni.expensemanager.transactions.TransactionModel;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -317,6 +318,43 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 
         return model;
+    }
+
+    public String getCurrentMonthExpense(){
+
+
+        String amount = "";
+
+        try {
+
+
+            int current_month = Calendar.getInstance().get(Calendar.MONTH) + 1;
+
+            String query = "SELECT SUM("+ DatabaseInfo.Expenses.AMOUNT+") FROM " + DatabaseInfo.Expenses.TABLE_NAME + " GROUP BY " + DatabaseInfo.Expenses.MONTH +
+                    " HAVING " + DatabaseInfo.Expenses.MONTH +  " = " + current_month;
+
+            //Log.d("Query - ",query);
+
+            SQLiteDatabase database = this.getWritableDatabase();
+            Cursor cursor = database.rawQuery(query,null);
+
+            if (cursor != null){
+
+                cursor.moveToFirst();
+
+                amount = String.valueOf(cursor.getFloat(0));
+
+                cursor.close();
+            }
+
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+
+        return amount;
+
     }
 
     public List<AccountModel> getAllAccounts(){
