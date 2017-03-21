@@ -28,7 +28,7 @@ import java.util.List;
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     // Database Version
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
     private Context context;
 
     // Database Name
@@ -61,15 +61,20 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 
 
+    // TODO : Add Foreign key references....
     private static final String CREATE_TRANSACTIONS_TABLE = "CREATE TABLE " + DatabaseInfo.Transactions.TABLE_NAME +"("
             + DatabaseInfo.Transactions.ID +" INTEGER PRIMARY KEY AUTOINCREMENT, "
             + DatabaseInfo.Transactions.AMOUNT +" FLOAT NOT NULL, "
             + DatabaseInfo.Transactions.CURRENCY_ID + " INTEGER, "
             + DatabaseInfo.Transactions.SENDER_ID + " INTEGER, "
             + DatabaseInfo.Transactions.RECEIVER_ID + " INTEGER, "
-            + DatabaseInfo.Transactions.DATE + " DATE, "
+            //+ DatabaseInfo.Transactions.DATE + " DATE, "
             + DatabaseInfo.Transactions.CREATED_AT + " DATE, "
             + DatabaseInfo.Transactions.REPEAT + " BOOLEAN, "
+            + DatabaseInfo.Transactions.DAY + " INTEGER, "
+            + DatabaseInfo.Transactions.MONTH + " INTEGER, "
+            + DatabaseInfo.Transactions.YEAR + " INTEGER, "
+            + DatabaseInfo.Transactions.TYPE + " INTEGER, "     // 1 - Transfer  2 - Income
             + DatabaseInfo.Transactions.DESCRIPTION + " TEXT )";
 
     public DatabaseHelper(Context context) {
@@ -94,8 +99,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 
-        if (newVersion > oldVersion){
+        if (newVersion > oldVersion){   //TODO
 
+            Log.d("Database upgraded to v",""+newVersion);
 
             db.execSQL(CREATE_ACCOUNTS_TABLE);
 
@@ -178,9 +184,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             contentValues.put(DatabaseInfo.Transactions.SENDER_ID,model.getSender_id());
             contentValues.put(DatabaseInfo.Transactions.RECEIVER_ID, model.getReceiver_id());
             contentValues.put(DatabaseInfo.Transactions.CURRENCY_ID,model.getCurrency_id());
-            contentValues.put(DatabaseInfo.Transactions.DATE,model.getDate_of_transaction().toString());
+           // contentValues.put(DatabaseInfo.Transactions.DATE,model.getDate_of_transaction().toString());
             contentValues.put(DatabaseInfo.Transactions.CREATED_AT,model.getCreated_at().toString());
             contentValues.put(DatabaseInfo.Transactions.REPEAT,model.getRepeat());
+            contentValues.put(DatabaseInfo.Transactions.TYPE,model.getType());  // Income or Transfer ?
+            contentValues.put(DatabaseInfo.Transactions.DAY,model.getDay());
+            contentValues.put(DatabaseInfo.Transactions.MONTH,model.getMonth());
+            contentValues.put(DatabaseInfo.Transactions.YEAR,model.getDay());
 
 
 
@@ -356,6 +366,74 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return amount;
 
     }
+
+
+    public String getCurrentMonthIncome(){
+
+        String amount = "";
+
+        try{
+
+            int current_month = Calendar.getInstance().get(Calendar.MONTH) + 1;
+
+            String query = "SELECT SUM("+ DatabaseInfo.Transactions.AMOUNT +") FROM " + DatabaseInfo.Transactions.TABLE_NAME + " GROUP BY "
+                    + DatabaseInfo.Transactions.MONTH + " HAVING (" + DatabaseInfo.Transactions.MONTH +" = " + current_month
+                    + " AND " + DatabaseInfo.Transactions.TYPE + " = 2)";
+
+
+            SQLiteDatabase database = this.getWritableDatabase();
+            Cursor cursor = database.rawQuery(query,null);
+
+            if (cursor != null){
+
+                cursor.moveToFirst();
+
+                amount = String.valueOf(cursor.getFloat(0));
+
+                cursor.close();
+            }
+
+
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+        return amount;
+
+    }
+
+
+    public String getTotalBalance(){
+
+        String amount = "";
+
+        try {
+
+
+            String query = "SELECT SUM(" + DatabaseInfo.Accounts.BALANCE + ") FROM " + DatabaseInfo.Accounts.TABLE_NAME;
+
+            SQLiteDatabase database = this.getWritableDatabase();
+            Cursor cursor = database.rawQuery(query,null);
+
+            if (cursor != null){
+
+                cursor.moveToFirst();
+
+                amount = String.valueOf(cursor.getFloat(0));
+
+                cursor.close();
+            }
+
+
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+
+        return amount;
+    }
+
 
     public List<AccountModel> getAllAccounts(){
 

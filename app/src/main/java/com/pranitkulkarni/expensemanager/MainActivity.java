@@ -27,6 +27,7 @@ import com.pranitkulkarni.expensemanager.expense.AddExpense;
 import com.pranitkulkarni.expensemanager.expense.ExpenseCategoryModel;
 import com.pranitkulkarni.expensemanager.expense.ExpenseModel;
 import com.pranitkulkarni.expensemanager.transactions.AddIncome;
+import com.pranitkulkarni.expensemanager.transactions.AddTransfer;
 
 import java.util.ArrayList;
 import java.util.Currency;
@@ -110,6 +111,14 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 startActivity(new Intent(MainActivity.this,AddIncome.class));
+            }
+        });
+
+        findViewById(R.id.add_transfer).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                startActivity(new Intent(MainActivity.this,AddTransfer.class));
             }
         });
 

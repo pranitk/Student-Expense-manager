@@ -18,7 +18,6 @@ import com.pranitkulkarni.expensemanager.MyValidator;
 import com.pranitkulkarni.expensemanager.R;
 import com.pranitkulkarni.expensemanager.bank_accounts.SelectAccount;
 import com.pranitkulkarni.expensemanager.database.DatabaseHelper;
-import com.pranitkulkarni.expensemanager.expense.AddExpense;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -26,37 +25,48 @@ import java.util.Calendar;
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
-public class AddIncome extends AppCompatActivity {
+public class AddTransfer extends AppCompatActivity {
 
-    TextView accountTv,dateTv;
-    EditText amountEt,descEt;
+    EditText amountEt,descriptionEt;
+    TextView senderAccountTv,receiverAccountTv,dateTv;
+    int sender_account_id=0,receiver_account_id=0,transaction_day=0,transaction_month=0,transaction_year=0;
     CoordinatorLayout coordinatorLayout;
-    int account_id=0,transaction_day=0,transaction_month=0,transaction_year=0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_income);
+        setContentView(R.layout.activity_add_transfer);
 
         CalligraphyConfig.initDefault(new CalligraphyConfig.Builder().setDefaultFontPath(getString(R.string.Open_regular)).build());
 
-        coordinatorLayout = (CoordinatorLayout)findViewById(R.id.coordinatorLayout);
-        descEt = (EditText)findViewById(R.id.description);
-        amountEt = (EditText)findViewById(R.id.amount);
-        accountTv = (TextView)findViewById(R.id.select_account_text);
-        dateTv = (TextView)findViewById(R.id.select_date_text);
 
+        coordinatorLayout = (CoordinatorLayout)findViewById(R.id.coordinatorLayout);
+        amountEt = (EditText)findViewById(R.id.amount);
+        descriptionEt = (EditText)findViewById(R.id.description);
+        senderAccountTv = (TextView)findViewById(R.id.sender_account_text);
+        receiverAccountTv = (TextView)findViewById(R.id.receiver_account_text);
+        dateTv = (TextView)findViewById(R.id.select_date_text);
 
 
         transaction_year = Calendar.getInstance().get(Calendar.YEAR);
         transaction_month = Calendar.getInstance().get(Calendar.MONTH);
         transaction_day = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
 
-        findViewById(R.id.select_account).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.select_sender_account).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                startActivityForResult(new Intent(AddIncome.this, SelectAccount.class),1);
+                startActivityForResult(new Intent(AddTransfer.this, SelectAccount.class),1);
+
+            }
+        });
+
+
+        findViewById(R.id.select_receiver_account).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                startActivityForResult(new Intent(AddTransfer.this, SelectAccount.class),2);
 
             }
         });
@@ -69,51 +79,51 @@ public class AddIncome extends AppCompatActivity {
             }
         });
 
+
         findViewById(R.id.select_date).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
 
-                DatePickerDialog datePickerDialog = new DatePickerDialog(AddIncome.this,dateSetListener,transaction_year,transaction_month,transaction_day);
+                DatePickerDialog datePickerDialog = new DatePickerDialog(AddTransfer.this,dateSetListener,transaction_year,transaction_month,transaction_day);
                 datePickerDialog.show();
 
             }
         });
 
+
         findViewById(R.id.done).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                if (areFieldsValid()){
+                if (areFieldsValid()){  // Check if input is valid....
 
                     try {
 
 
-                        final DatabaseHelper databaseHelper = new DatabaseHelper(AddIncome.this);
+                        final DatabaseHelper databaseHelper = new DatabaseHelper(AddTransfer.this);
 
                         TransactionModel transaction = new TransactionModel();
                         transaction.setAmount(Float.parseFloat(amountEt.getText().toString()));
-                        transaction.setCurrency_id(1);
-                        transaction.setDescription(descEt.getText().toString());
-                        transaction.setReceiver_id(account_id);
-                        transaction.setSender_id(0);
+                        transaction.setCurrency_id(1);  // TODO
+                        transaction.setDescription(descriptionEt.getText().toString());
+                        transaction.setReceiver_id(receiver_account_id); // to
+                        transaction.setSender_id(sender_account_id);    // from
 
+                        transaction.setRepeat(false);
 
-                        transaction.setType(2);
+                        transaction.setType(1);
                         transaction.setDay(transaction_day);
                         transaction.setMonth(transaction_month + 1);
                         transaction.setYear(transaction_year);
 
-                        Switch repeatSwitch = (Switch)findViewById(R.id.switchRepeat);
-                        transaction.setRepeat(repeatSwitch.isChecked());    // TODO SET ACTION FOR REPEATING TRANSACTIONS
-
-                        String date = transaction_day+"-"+(transaction_month+1)+"-"+transaction_year;
-                        transaction.setDate_of_transaction(new SimpleDateFormat("dd-MM-yyyy").parse(date));
+                        //String date = transaction_day+"-"+(transaction_month+1)+"-"+transaction_year;
+                        //transaction.setDate_of_transaction(new SimpleDateFormat("dd-MM-yyyy").parse(date));
                         transaction.setCreated_at(Calendar.getInstance().getTime());
 
 
                         if(databaseHelper.addTransaction(transaction))
-                            finish();   // close page if income is saved
+                            finish();   // close page if transfer is saved
                         else
                             Snackbar.make(coordinatorLayout,"Something went wrong!",Snackbar.LENGTH_LONG).show();
 
@@ -127,29 +137,13 @@ public class AddIncome extends AppCompatActivity {
 
                 }
 
+
             }
         });
 
-    }
-
-
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-
-        if (requestCode == 1) {
-
-            if (resultCode == Activity.RESULT_OK) {
-
-                account_id = data.getIntExtra("account_id",0);
-                accountTv.setText(data.getStringExtra("account_name"));
-
-            }
-        }
 
     }
+
 
 
     private DatePickerDialog.OnDateSetListener dateSetListener = new DatePickerDialog.OnDateSetListener() {
@@ -189,6 +183,7 @@ public class AddIncome extends AppCompatActivity {
         }
     };
 
+
     private Boolean areFieldsValid() {
 
         final MyValidator validator = new MyValidator();
@@ -208,13 +203,28 @@ public class AddIncome extends AppCompatActivity {
         }
 
 
-        if (account_id <= 0){
+        if (sender_account_id <= 0){
 
-            Snackbar.make(coordinatorLayout,"Select an account",Snackbar.LENGTH_LONG).setAction("OK", new View.OnClickListener() {
+            Snackbar.make(coordinatorLayout,"Select account 1",Snackbar.LENGTH_LONG).setAction("OK", new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
 
-                    startActivityForResult(new Intent(AddIncome.this,SelectAccount.class),1);
+                    startActivityForResult(new Intent(AddTransfer.this,SelectAccount.class),1);
+
+                }
+            });
+
+            return false;
+        }
+
+
+        if (receiver_account_id <= 0){
+
+            Snackbar.make(coordinatorLayout,"Select account 2",Snackbar.LENGTH_LONG).setAction("OK", new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    startActivityForResult(new Intent(AddTransfer.this,SelectAccount.class),2);
 
                 }
             });
@@ -229,7 +239,7 @@ public class AddIncome extends AppCompatActivity {
             return false;
         }
 
-        if (!validator.isStringValid(descEt)){
+        if (!validator.isStringValid(descriptionEt)){
 
             Snackbar.make(coordinatorLayout,"Enter description",Snackbar.LENGTH_LONG).show();
 
@@ -242,7 +252,37 @@ public class AddIncome extends AppCompatActivity {
 
 
     @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+
+        if (requestCode == 1) { // from
+
+            if (resultCode == Activity.RESULT_OK) {
+
+                sender_account_id = data.getIntExtra("account_id",0);
+                senderAccountTv.setText(data.getStringExtra("account_name"));
+
+            }
+        }
+
+
+        if (requestCode == 2) { // to
+
+            if (resultCode == Activity.RESULT_OK) {
+
+                receiver_account_id = data.getIntExtra("account_id",0);
+                receiverAccountTv.setText(data.getStringExtra("account_name"));
+
+            }
+        }
+
+
+    }
+
+    @Override
     protected void attachBaseContext(Context tp) {
         super.attachBaseContext(CalligraphyContextWrapper.wrap(tp));
     }
+
 }

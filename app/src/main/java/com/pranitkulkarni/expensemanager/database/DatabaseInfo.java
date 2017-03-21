@@ -60,9 +60,14 @@ public final class DatabaseInfo {
         public static final String DESCRIPTION = "description";
         public static final String AMOUNT = "amount";
         public static final String CURRENCY_ID = "currency_id";
-        public static final String DATE = "date_of_transaction";
+        //public static final String DATE = "date_of_transaction";
         public static final String CREATED_AT = "created_at";
         public static final String REPEAT = "repeat";
+        public static final String DAY = "expense_day";
+        public static final String MONTH = "expense_month";
+        public static final String YEAR = "expense_year";
+
+        public static final String TYPE = "type";
 
     }
 

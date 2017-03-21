@@ -8,7 +8,7 @@ import java.util.Date;
 
 public class TransactionModel {
 
-    private int id =0, sender_id = 0, receiver_id = 0, currency_id = 0;
+    private int id =0, sender_id = 0, receiver_id = 0, currency_id = 0,type =0 ,day=0,month=0,year=0;
     private String description = "";
     private float amount = 0;
     private Date date_of_transaction,created_at;
@@ -40,6 +40,22 @@ public class TransactionModel {
 
     public void setDate_of_transaction(Date date_of_transaction) {
         this.date_of_transaction = date_of_transaction;
+    }
+
+    public void setDay(int day) {
+        this.day = day;
+    }
+
+    public void setMonth(int month) {
+        this.month = month;
+    }
+
+    public void setYear(int year) {
+        this.year = year;
+    }
+
+    public void setType(int type) {
+        this.type = type;
     }
 
     public void setCreated_at(Date created_at) {
@@ -79,6 +95,22 @@ public class TransactionModel {
 
     public Date getDate_of_transaction() {
         return date_of_transaction;
+    }
+
+    public int getDay() {
+        return day;
+    }
+
+    public int getMonth() {
+        return month;
+    }
+
+    public int getYear() {
+        return year;
+    }
+
+    public int getType() {
+        return type;
     }
 
     public Date getCreated_at() {

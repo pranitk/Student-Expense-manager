@@ -21,5 +21,21 @@
     </android.support.design.widget.AppBarLayout>
 
 
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_marginBottom="48dp"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+
+    <android.support.v7.widget.AppCompatButton
+        android:id="@+id/add_account"
+        android:textColor="@android:color/white"
+        android:text="ADD ACCOUNT"
+        android:background="@color/accent"
+        android:layout_gravity="bottom"
+        android:layout_width="match_parent"
+        android:layout_height="48dp" />
 
 </android.support.design.widget.CoordinatorLayout>

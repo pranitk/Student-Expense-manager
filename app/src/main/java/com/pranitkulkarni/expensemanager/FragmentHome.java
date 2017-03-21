@@ -1,6 +1,7 @@
 package com.pranitkulkarni.expensemanager;
 
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -12,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.pranitkulkarni.expensemanager.bank_accounts.ShowAllAccounts;
 import com.pranitkulkarni.expensemanager.database.DatabaseHelper;
 import com.pranitkulkarni.expensemanager.expense.AdapterExpenses;
 import com.pranitkulkarni.expensemanager.expense.ExpenseModel;
@@ -46,6 +48,8 @@ public class FragmentHome extends Fragment {
 
         monthName = (TextView)view.findViewById(R.id.month_name);
         monthlyExpense = (TextView)view.findViewById(R.id.expense_amount);
+        totalBalance = (TextView)view.findViewById(R.id.total_balance);
+        monnthlyIncome = (TextView)view.findViewById(R.id.income_amount);
         recyclerViewExpenses = (RecyclerView)view.findViewById(R.id.recyclerViewExpenses);
         recyclerViewExpenses.setLayoutManager(new LinearLayoutManager(getActivity()));
 
@@ -56,7 +60,19 @@ public class FragmentHome extends Fragment {
         String monthInWords = Calendar.getInstance().getDisplayName(Calendar.MONTH,Calendar.LONG,Locale.US);
         monthName.setText(monthInWords);
 
-        monthlyExpense.setText(databaseHelper.getCurrentMonthExpense());
+        monthlyExpense.setText("$ " + databaseHelper.getCurrentMonthExpense());
+        totalBalance.setText("$ " + databaseHelper.getTotalBalance());
+        monnthlyIncome.setText("$ " + databaseHelper.getCurrentMonthIncome());
+
+        view.findViewById(R.id.show_all_accounts).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                startActivity(new Intent(getActivity(), ShowAllAccounts.class));
+
+            }
+        });
+
 
         return view;
     }

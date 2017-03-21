@@ -25,7 +25,8 @@
         <activity
             android:name=".bank_accounts.ShowAllAccounts"
             android:label="@string/title_activity_show_all_accounts"
-            android:theme="@style/AppTheme"></activity>
+            android:theme="@style/AppTheme" />
+        <activity android:name=".transactions.AddTransfer"></activity>
     </application>
 
 </manifest>
