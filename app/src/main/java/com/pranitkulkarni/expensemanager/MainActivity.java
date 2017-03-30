@@ -1,5 +1,7 @@
 package com.pranitkulkarni.expensemanager;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -30,8 +32,10 @@ import com.pranitkulkarni.expensemanager.transactions.AddIncome;
 import com.pranitkulkarni.expensemanager.transactions.AddTransfer;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Currency;
 import java.util.List;
+import java.util.Locale;
 
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
@@ -63,9 +67,13 @@ public class MainActivity extends AppCompatActivity {
 
         databaseHelper = new DatabaseHelper(this);
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+
+
+        /*if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             Log.d("Available currencies - ",Currency.getAvailableCurrencies().toString());
-        }
+        }*/
+
+
 
         /*findViewById(R.id.fab).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -86,6 +94,16 @@ public class MainActivity extends AppCompatActivity {
             Log.d("Categories"," already created...");
 
 
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putString("default_currency_code",Currency.getInstance(Locale.getDefault()).getCurrencyCode());
+        editor.putString("default_currency_symbol",Currency.getInstance(Locale.getDefault()).getSymbol(Locale.getDefault()));
+        editor.apply();
+
+        Log.d("Local Currency code - ",Currency.getInstance(Locale.getDefault()).getCurrencyCode());
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            Log.d("Local Currency Name - ",Currency.getInstance(Locale.getDefault()).getDisplayName());
+        }
+
         getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer,new FragmentHome()).commit();
 
 
@@ -94,6 +112,8 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 startActivity(new Intent(MainActivity.this,AddAccount.class));
+
+
 
             }
         });
@@ -121,6 +141,7 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(new Intent(MainActivity.this,AddTransfer.class));
             }
         });
+
 
     }
 

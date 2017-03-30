@@ -27,12 +27,16 @@ import com.pranitkulkarni.expensemanager.MyValidator;
 import com.pranitkulkarni.expensemanager.R;
 import com.pranitkulkarni.expensemanager.bank_accounts.AccountModel;
 import com.pranitkulkarni.expensemanager.bank_accounts.SelectAccount;
+import com.pranitkulkarni.expensemanager.currency.SelectCurrency;
 import com.pranitkulkarni.expensemanager.database.DatabaseHelper;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Currency;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
@@ -81,9 +85,27 @@ public class AddExpense extends AppCompatActivity {
             }
         });
 
-        expense_year = Calendar.getInstance().get(Calendar.YEAR);
-        expense_month = Calendar.getInstance().get(Calendar.MONTH);
-        expense_day = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
+
+        /*findViewById(R.id.currency).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                startActivityForResult(new Intent(AddExpense.this,SelectCurrency.class),3);
+
+            }
+        });*/
+
+        if (getIntent().getBooleanExtra("isEdit",false))
+            getDataFromIntent();
+        else {
+
+            final Calendar calendar = Calendar.getInstance();
+            expense_year = calendar.get(Calendar.YEAR);
+            expense_month = calendar.get(Calendar.MONTH);
+            expense_day = calendar.get(Calendar.DAY_OF_MONTH);
+        }
+
+
 
         findViewById(R.id.select_date).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -120,7 +142,7 @@ public class AddExpense extends AppCompatActivity {
                         Log.d("Year of expense",""+expense_year);
 
                         expense.setDay(expense_day);
-                        expense.setMonth(expense_month+1);
+                        expense.setMonth(expense_month);
                         expense.setYear(expense_year);
 
                         if(databaseHelper.addExpense(expense))
@@ -150,6 +172,51 @@ public class AddExpense extends AppCompatActivity {
             }
         });
     }
+
+    // Used for edit expense...
+
+    private void getDataFromIntent(){
+
+
+        final DatabaseHelper databaseHelper = new DatabaseHelper(AddExpense.this);
+
+        final ExpenseModel expense = (ExpenseModel) getIntent().getSerializableExtra("expense_model");
+
+        category_id = expense.getCategory_id();
+        account_id = expense.getAccount_id();
+        expense_year = expense.getYear();
+        expense_month = expense.getMonth();
+        expense_day = expense.getDay();
+        amountEt.setText(String.valueOf(expense.getAmount()));
+        descEt.setText(expense.getDesc());
+
+        accountTv.setText(databaseHelper.getAccountName(account_id));
+        categoryTv.setText(databaseHelper.getCategoryName(category_id));
+
+        // Set date ...
+
+        final Calendar calendar = Calendar.getInstance();
+
+        if (expense_year == calendar.get(Calendar.YEAR) && expense_month == calendar.get(Calendar.MONTH) && expense_day == calendar.get(Calendar.DAY_OF_MONTH))
+            dateTv.setText("TODAY");
+        else {
+
+
+            SimpleDateFormat monthFormat = new SimpleDateFormat("MMM");
+            SimpleDateFormat systemFormat = new SimpleDateFormat("MM");
+
+            try {
+
+                dateTv.setText(monthFormat.format(systemFormat.parseObject(String.valueOf(expense_month + 1))));
+
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+
+
+    }
+
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {

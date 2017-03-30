@@ -25,12 +25,13 @@ public final class DatabaseInfo {
         public static final String TABLE_NAME = "expenses";
 
         public static final String ID = "id";
+        //public static final String ENTERED_AMOUNT = "entered_amount";   // entered by user
         public static final String AMOUNT = "amount";
         public static final String DESCRIPTION = "description"; // What's the expense
         public static final String CATEGORY = "category_id";    // Food, Electronics etc
         public static final String ACCOUNT_ID = "account_id";   // Paid by which account
-        public static final String DATE = "date_of_expense";
-        public static final String CURRENCY_ID = "currency_id";     // currency of expense
+        public static final String CREATED_AT = "created_at";
+       // public static final String CURRENCY_ID = "currency_id";     // currency of expense
         public static final String DAY = "expense_day";
         public static final String MONTH = "expense_month";
         public static final String YEAR = "expense_year";
@@ -59,17 +60,19 @@ public final class DatabaseInfo {
         public static final String RECEIVER_ID = "receiver_id";
         public static final String DESCRIPTION = "description";
         public static final String AMOUNT = "amount";
-        public static final String CURRENCY_ID = "currency_id";
+       // public static final String CURRENCY_ID = "currency_id";
         //public static final String DATE = "date_of_transaction";
         public static final String CREATED_AT = "created_at";
         public static final String REPEAT = "repeat";
-        public static final String DAY = "expense_day";
-        public static final String MONTH = "expense_month";
-        public static final String YEAR = "expense_year";
+        public static final String DAY = "transaction_day";
+        public static final String MONTH = "transaction_month";
+        public static final String YEAR = "transaction_year";
 
         public static final String TYPE = "type";
 
     }
+
+
 
     public static class Profile implements BaseColumns{
 
