@@ -97,7 +97,7 @@ public class FragmentHome extends Fragment {
             try{
 
 
-                list = databaseHelper.getAllExpenses();
+                list = databaseHelper.getExpenses(true);
 
                 Log.d("Expenses list"," size = "+list.size());
 

@@ -54,10 +54,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             + DatabaseInfo.Expenses.CATEGORY + " INTEGER, "
             + DatabaseInfo.Expenses.DESCRIPTION + " TEXT,"
             + DatabaseInfo.Expenses.ACCOUNT_ID +" INTEGER,"
-            + DatabaseInfo.Expenses.CREATED_AT +" DATE, "
+            + DatabaseInfo.Expenses.UPDATED_AT +" DATE, "
             + DatabaseInfo.Expenses.DAY + " INTEGER, "
             + DatabaseInfo.Expenses.MONTH + " INTEGER, "
-            + DatabaseInfo.Expenses.YEAR + " INTEGER, " +
+            + DatabaseInfo.Expenses.YEAR + " INTEGER " +
             //+ DatabaseInfo.Expenses.CURRENCY_ID+" INTEGER" +
             ", FOREIGN KEY (" + DatabaseInfo.Expenses.CATEGORY+") "+ "REFERENCES "+ DatabaseInfo.Expenses.TABLE_NAME + "(" + DatabaseInfo.ExpenseCategory.ID + ")"+
             ", FOREIGN KEY (" + DatabaseInfo.Expenses.ACCOUNT_ID+") "+ "REFERENCES "+ DatabaseInfo.Accounts.TABLE_NAME + "(" + DatabaseInfo.Accounts.ID + "))";
@@ -171,6 +171,39 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
 
+    public Boolean updateExpense(ExpenseModel model){
+
+
+        try {
+
+            SQLiteDatabase database = getWritableDatabase();
+
+            ContentValues contentValues = new ContentValues();
+            contentValues.put(DatabaseInfo.Expenses.AMOUNT,model.getAmount());
+            contentValues.put(DatabaseInfo.Expenses.DESCRIPTION,model.getDesc());
+            contentValues.put(DatabaseInfo.Expenses.ACCOUNT_ID,model.getAccount_id());
+            contentValues.put(DatabaseInfo.Expenses.CATEGORY,model.getCategory_id());
+            //contentValues.put(DatabaseInfo.Expenses.DATE,String.valueOf(model.getDate()));
+            contentValues.put(DatabaseInfo.Expenses.DAY,model.getDay());
+            contentValues.put(DatabaseInfo.Expenses.MONTH,model.getMonth());
+            contentValues.put(DatabaseInfo.Expenses.YEAR,model.getYear());
+            contentValues.put(DatabaseInfo.Expenses.UPDATED_AT,String.valueOf(model.getUpdated_at()));
+            //contentValues.put(DatabaseInfo.Expenses.CURRENCY_ID,model.getCurrency_id());
+
+            database.update(DatabaseInfo.Expenses.TABLE_NAME,contentValues, DatabaseInfo.Expenses.ID+" = "+ model.getId(),null);
+
+            database.close();
+
+        }catch (Exception e){
+            e.printStackTrace();
+            return false;
+        }
+
+
+        return true;
+    }
+
+
     public Boolean addTransaction(TransactionModel model){
 
         Boolean saved = false;
@@ -217,7 +250,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     }
 
-    private Boolean updateAccountBalance(int account_id, float amount){
+    public Boolean updateAccountBalance(int account_id, float amount){
 
         try{
 
@@ -502,11 +535,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     }
 
-    public List<ExpenseModel> getAllExpenses(){
+    public List<ExpenseModel> getExpenses(Boolean recent){
 
         List<ExpenseModel> expenses = new ArrayList<>();
 
-        String query = "SELECT * FROM "+ DatabaseInfo.Expenses.TABLE_NAME;
+        String temp = "";
+
+        if (recent)
+            temp = " LIMIT 10";
+
+        String query = "SELECT * FROM "+ DatabaseInfo.Expenses.TABLE_NAME + temp;
 
         SQLiteDatabase database = this.getWritableDatabase();
         Cursor cursor = database.rawQuery(query,null);

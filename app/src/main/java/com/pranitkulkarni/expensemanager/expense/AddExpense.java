@@ -45,7 +45,10 @@ public class AddExpense extends AppCompatActivity {
 
 
     int category_id = 0,account_id = 0,expense_year=0,expense_month=0,expense_day=0;
+    int expense_id =0; // Only to be used for EDIT EXPENSE
+    Boolean isEdit;
     String account_name = "",category_name = "",category_icon = "";
+    Float old_amount;
     TextView accountTv,dateTv,categoryTv;
     EditText amountEt,descEt;
     CoordinatorLayout coordinatorLayout;
@@ -95,7 +98,9 @@ public class AddExpense extends AppCompatActivity {
             }
         });*/
 
-        if (getIntent().getBooleanExtra("isEdit",false))
+        isEdit = getIntent().getBooleanExtra("isEdit",false);
+
+        if (isEdit)
             getDataFromIntent();
         else {
 
@@ -122,44 +127,89 @@ public class AddExpense extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                if (areFieldsValid()){
+                AlertDialog.Builder builder = new AlertDialog.Builder(AddExpense.this);
+                builder.setTitle("Save expense ?");
+                builder.setNegativeButton("Cancel",null);
+                builder.setPositiveButton("Yes",null);
 
-                    try
-                    {
+                AlertDialog alertDialog = builder.show();
 
-                        final DatabaseHelper databaseHelper = new DatabaseHelper(AddExpense.this);
+                alertDialog.getButton(DialogInterface.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
 
-                        ExpenseModel expense = new ExpenseModel();
-                        expense.setAccount_id(account_id);
-                        expense.setAmount(Float.parseFloat(amountEt.getText().toString()));
-                        expense.setCategory_id(category_id);
-                        expense.setCurrency_id(1);
-                        expense.setDesc(descEt.getText().toString());
-                        /*String date = expense_day+"/"+(expense_month + 1)+"/"+expense_year;
-                        expense.setDate(new SimpleDateFormat("dd/MM/yyyy").parse(date));*/
+                        if (areFieldsValid()){
 
-                        Log.d("Day of expense",""+expense_day);
-                        Log.d("Year of expense",""+expense_year);
+                            try
+                            {
 
-                        expense.setDay(expense_day);
-                        expense.setMonth(expense_month);
-                        expense.setYear(expense_year);
+                                final DatabaseHelper databaseHelper = new DatabaseHelper(AddExpense.this);
 
-                        if(databaseHelper.addExpense(expense))
-                            finish();   // close page if expense is saved
-                        else
-                            Snackbar.make(coordinatorLayout,"Something went wrong!",Snackbar.LENGTH_LONG).show();
+                                ExpenseModel expense = new ExpenseModel();
+                                expense.setAccount_id(account_id);
+                                expense.setAmount(Float.parseFloat(amountEt.getText().toString()));
+                                expense.setCategory_id(category_id);
+                                //expense.setCurrency_id(1);
+                                expense.setDesc(descEt.getText().toString());
+                                expense.setUpdated_at(Calendar.getInstance().getTime());
+                                /*String date = expense_day+"/"+(expense_month + 1)+"/"+expense_year;
+                                expense.setDate(new SimpleDateFormat("dd/MM/yyyy").parse(date));*/
 
-                        databaseHelper.close();
+                                Log.d("Day of expense",""+expense_day);
+                                Log.d("Year of expense",""+expense_year);
 
-                        Log.d("Expense Added - "," Date: "+expense.getDate());
+                                expense.setDay(expense_day);
+                                expense.setMonth(expense_month);
+                                expense.setYear(expense_year);
 
-                    }catch (Exception e){
-                        e.printStackTrace();
+                                if (isEdit){
+
+                                    // TODO: What if account was changed ? Adjust the balance accordingly...
+
+                                    expense.setId(expense_id);  // ID required to update row
+                                    Boolean updatedSuccessfully = false;
+
+                                    //if amount is changed then update it to database
+                                    if (old_amount != expense.getAmount()) {
+                                        if (databaseHelper.updateAccountBalance(account_id, expense.getAmount() - old_amount)) // Add the difference
+                                            updatedSuccessfully = databaseHelper.updateExpense(expense);
+                                    }
+                                    else // if amount is unchanged then only update other details
+                                        updatedSuccessfully = databaseHelper.updateExpense(expense);
+
+
+                                    if (updatedSuccessfully)
+                                        finish();
+                                    else
+                                        Snackbar.make(coordinatorLayout,"Something went wrong!",Snackbar.LENGTH_LONG).show();
+
+                                }
+                                else {
+
+
+                                    if(databaseHelper.addExpense(expense))
+                                        finish();   // close page if expense is saved
+                                    else
+                                        Snackbar.make(coordinatorLayout,"Something went wrong!",Snackbar.LENGTH_LONG).show();
+
+                                }
+
+
+                                databaseHelper.close();
+
+                                Log.d("Expense Added - "," Date: "+expense.getUpdated_at());
+
+                            }catch (Exception e){
+                                e.printStackTrace();
+                            }
+
+
+                        }
+
                     }
+                });
 
 
-                }
 
             }
         });
@@ -178,7 +228,7 @@ public class AddExpense extends AppCompatActivity {
     private void getDataFromIntent(){
 
 
-        final DatabaseHelper databaseHelper = new DatabaseHelper(AddExpense.this);
+        /*final DatabaseHelper databaseHelper = new DatabaseHelper(AddExpense.this);
 
         final ExpenseModel expense = (ExpenseModel) getIntent().getSerializableExtra("expense_model");
 
@@ -191,7 +241,19 @@ public class AddExpense extends AppCompatActivity {
         descEt.setText(expense.getDesc());
 
         accountTv.setText(databaseHelper.getAccountName(account_id));
-        categoryTv.setText(databaseHelper.getCategoryName(category_id));
+        categoryTv.setText(databaseHelper.getCategoryName(category_id));*/
+
+        Intent data = getIntent();
+        expense_id = data.getIntExtra("id",0);
+        setCategory(data);
+        setAccount(data);
+        descEt.setText(data.getStringExtra("description"));
+        old_amount = data.getFloatExtra("amount_value",0);
+        amountEt.setText(data.getStringExtra("amount"));
+        expense_year = data.getIntExtra("year",0);
+        expense_month = data.getIntExtra("month",0);
+        expense_day = data.getIntExtra("day",0);
+
 
         // Set date ...
 
@@ -207,7 +269,8 @@ public class AddExpense extends AppCompatActivity {
 
             try {
 
-                dateTv.setText(monthFormat.format(systemFormat.parseObject(String.valueOf(expense_month + 1))));
+                String monthText = monthFormat.format(systemFormat.parseObject(String.valueOf(expense_month + 1)));
+                dateTv.setText(expense_day+" "+monthText+" "+expense_year);
 
             }catch (Exception e){
                 e.printStackTrace();
@@ -227,34 +290,13 @@ public class AddExpense extends AppCompatActivity {
         if (requestCode == 1) {
 
             if (resultCode == Activity.RESULT_OK)
-            {
-
-                account_id = data.getIntExtra("account_id",0);
-                account_name = data.getStringExtra("account_name");
-                accountTv.setText(account_name);
-
-            }
+                setAccount(data);
         }
 
         if (requestCode == 2){
 
-            if (resultCode == Activity.RESULT_OK){
-
-
-                category_id = data.getIntExtra("category_id",0);
-                category_name = data.getStringExtra("category_name");
-                category_icon = data.getStringExtra("category_icon");
-
-
-                categoryTv.setText(category_name);
-
-                // Hide the imageview and show the fontawesome text icon
-                TextView iconText = (TextView)findViewById(R.id.selected_category_icon);
-                findViewById(R.id.category_icon).setVisibility(View.GONE);
-
-                iconText.setText(category_icon);
-                iconText.setVisibility(View.VISIBLE);
-            }
+            if (resultCode == Activity.RESULT_OK)
+                setCategory(data);
 
         }
     }
@@ -360,6 +402,30 @@ public class AddExpense extends AppCompatActivity {
 
         return true;
 
+    }
+
+
+    private void setCategory(Intent data){
+
+        category_id = data.getIntExtra("category_id",0);
+        category_name = data.getStringExtra("category_name");
+        category_icon = data.getStringExtra("category_icon");
+
+
+        categoryTv.setText(category_name);
+
+        // Hide the imageview and show the fontawesome text icon
+        TextView iconText = (TextView)findViewById(R.id.selected_category_icon);
+        findViewById(R.id.category_icon).setVisibility(View.GONE);
+
+        iconText.setText(category_icon);
+        iconText.setVisibility(View.VISIBLE);
+    }
+
+    private void setAccount(Intent data){
+        account_id = data.getIntExtra("account_id",0);
+        account_name = data.getStringExtra("account_name");
+        accountTv.setText(account_name);
     }
 
     /*private void showAllCategories(){

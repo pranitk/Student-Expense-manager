@@ -1,10 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<android.support.v7.widget.CardView
     android:layout_width="match_parent"
-    android:background="@android:color/white"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardUseCompatPadding="true"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <RelativeLayout
+        android:id="@+id/click_layout"
+        android:layout_width="match_parent"
+        android:background="?attr/selectableItemBackground"
+        android:layout_height="wrap_content">
 
 
     <!--
@@ -148,6 +155,7 @@
             <TextView
                 android:id="@+id/category_name"
                 android:textSize="12sp"
+                android:textAllCaps="true"
                 android:layout_marginTop="4dp"
                 android:text="FOODS AND DRINKS"
                 android:layout_width="match_parent"
@@ -195,3 +203,6 @@
         android:layout_height="1dp"/>
 
 </RelativeLayout>
+
+
+</android.support.v7.widget.CardView>

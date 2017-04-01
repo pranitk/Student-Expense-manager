@@ -85,7 +85,7 @@ public class MainActivity extends AppCompatActivity {
         });*/
 
 
-        SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences sharedPref = getSharedPreferences(getString(R.string.pref_expenses),Context.MODE_PRIVATE);
 
 
         if (!sharedPref.getBoolean(getString(R.string.pref_create_categories),false))
@@ -94,6 +94,7 @@ public class MainActivity extends AppCompatActivity {
             Log.d("Categories"," already created...");
 
 
+        // TODO: Set the currency selected by user
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putString("default_currency_code",Currency.getInstance(Locale.getDefault()).getCurrencyCode());
         editor.putString("default_currency_symbol",Currency.getInstance(Locale.getDefault()).getSymbol(Locale.getDefault()));
@@ -182,6 +183,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    /*
     private class GetAllExpenses extends AsyncTask<Void,Void,Boolean>{
 
         private List<ExpenseModel> list = new ArrayList<>();
@@ -218,7 +220,7 @@ public class MainActivity extends AppCompatActivity {
             }
 
         }
-    }
+    }*/
 
     public class AddCategories extends AsyncTask<Void,Void,Boolean>{
 
@@ -268,7 +270,7 @@ public class MainActivity extends AppCompatActivity {
             if (aBoolean){
 
 
-                SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
+                SharedPreferences sharedPref = getSharedPreferences(getString(R.string.pref_expenses),Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor = sharedPref.edit();
 
                 editor.putBoolean(getString(R.string.pref_create_categories),true);

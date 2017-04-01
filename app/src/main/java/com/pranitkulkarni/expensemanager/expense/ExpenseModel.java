@@ -15,7 +15,7 @@ public class ExpenseModel {
     private float amount = 0;
     private String desc = "";
     private int category_id = 0,account_id = 0,currency_id=0,id=0,day=0,month=0,year=0;
-    private Date date;
+    private Date updated_at;
     private AccountModel accountModel;
     private ExpenseCategoryModel expenseCategoryModel;
 
@@ -35,9 +35,9 @@ public class ExpenseModel {
         this.desc = desc;
     }
 
-    public void setDate(Date date) {
+    public void setUpdated_at(Date date) {
         Log.d("Saving date as",""+date);
-        this.date = date;
+        this.updated_at = date;
     }
 
     public void setCurrency_id(int currency_id) {
@@ -87,8 +87,8 @@ public class ExpenseModel {
         return category_id;
     }
 
-    public Date getDate() {
-        return date;
+    public Date getUpdated_at() {
+        return updated_at;
     }
 
     public String getDesc() {

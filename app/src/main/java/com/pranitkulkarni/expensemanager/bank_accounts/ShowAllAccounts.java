@@ -42,6 +42,9 @@ public class ShowAllAccounts extends AppCompatActivity {
 
         getAccounts();
 
+
+        Log.d("Currency symbol","- "+getPreferences(Context.MODE_PRIVATE).getString("default_currency_symbol",""));
+
         findViewById(R.id.add_account).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

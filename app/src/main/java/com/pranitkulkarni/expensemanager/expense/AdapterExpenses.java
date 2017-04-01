@@ -1,6 +1,8 @@
 package com.pranitkulkarni.expensemanager.expense;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -11,6 +13,7 @@ import android.widget.TextView;
 import com.pranitkulkarni.expensemanager.R;
 import com.pranitkulkarni.expensemanager.bank_accounts.AccountModel;
 
+import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -26,10 +29,14 @@ public class AdapterExpenses  extends RecyclerView.Adapter<AdapterExpenses.myVie
 
     private SimpleDateFormat monthFormat = new SimpleDateFormat("MMM");
     private SimpleDateFormat systemFormat = new SimpleDateFormat("MM");
+    private String currencySymbol = "";
+
 
     public AdapterExpenses(Context context,List<ExpenseModel> list){
         this.list = list;
         this.context = context;
+        this.currencySymbol = context.getSharedPreferences(context.getString(R.string.pref_expenses),Context.MODE_PRIVATE)
+                .getString("default_currency_symbol","");
     }
 
 
@@ -44,6 +51,7 @@ public class AdapterExpenses  extends RecyclerView.Adapter<AdapterExpenses.myVie
 
         final ExpenseModel expense = list.get(position);
         holder.description.setText(expense.getDesc());
+        holder.currency.setText(currencySymbol);
         holder.amount.setText(String.valueOf(expense.getAmount()));
 
 
@@ -52,7 +60,7 @@ public class AdapterExpenses  extends RecyclerView.Adapter<AdapterExpenses.myVie
 
         try {
 
-            String monthInWords = monthFormat.format(systemFormat.parseObject(String.valueOf(expense.getMonth())));
+            String monthInWords = monthFormat.format(systemFormat.parseObject(String.valueOf(expense.getMonth()+1)));
             String day = String.valueOf(expense.getDay());
             holder.date.setText(day+" "+monthInWords);
             //holder.month.setText(monthInWords);
@@ -76,6 +84,55 @@ public class AdapterExpenses  extends RecyclerView.Adapter<AdapterExpenses.myVie
         holder.categoryName.setText(categoryDetails.getName());
         holder.categoryIcon.setText(categoryDetails.getIcon());
 
+        holder.clickLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                builder.setTitle(currencySymbol+" "+expense.getAmount());
+                View body = LayoutInflater.from(context).inflate(R.layout.edit_and_delete,null);
+                builder.setView(body);
+
+                body.findViewById(R.id.edit).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        Intent intent = new Intent(context,AddExpense.class);
+                        intent.putExtra("isEdit",true);
+                        intent.putExtra("id",expense.getId());
+
+                        intent.putExtra("amount",String.valueOf(expense.getAmount()));
+                        intent.putExtra("amount_value",expense.getAmount());
+                        intent.putExtra("category_id",expense.getCategory_id());
+                        intent.putExtra("category_name",categoryDetails.getName());
+                        intent.putExtra("category_icon",categoryDetails.getIcon());
+
+                        intent.putExtra("account_id",expense.getAccount_id());
+                        intent.putExtra("account_name",accountDetails.getName());
+
+                        intent.putExtra("description",expense.getDesc());
+                        intent.putExtra("year",expense.getYear());
+                        intent.putExtra("month",expense.getMonth());
+                        intent.putExtra("day",expense.getDay());
+                        ///intent.putExtra("expense_model",expense);
+                        context.startActivity(intent);
+
+                    }
+                });
+
+                body.findViewById(R.id.delete).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                    }
+                });
+
+                builder.show();
+
+
+            }
+        });
+
     }
 
     @Override
@@ -87,6 +144,7 @@ public class AdapterExpenses  extends RecyclerView.Adapter<AdapterExpenses.myVie
 
         TextView categoryIcon,description,amount,currency,categoryName,date;//day,month,year;
         TextView accountName,accountIcon;
+        View clickLayout;
 
         public myViewHolder(View itemView) {
 
@@ -100,6 +158,8 @@ public class AdapterExpenses  extends RecyclerView.Adapter<AdapterExpenses.myVie
 
             accountIcon = (TextView)itemView.findViewById(R.id.account_type_icon);
             accountName = (TextView)itemView.findViewById(R.id.account_name);
+
+            clickLayout = itemView.findViewById(R.id.click_layout);
             /*
             day = (TextView)itemView.findViewById(R.id.day);
             month = (TextView)itemView.findViewById(R.id.month);

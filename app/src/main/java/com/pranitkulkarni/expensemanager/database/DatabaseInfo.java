@@ -30,7 +30,7 @@ public final class DatabaseInfo {
         public static final String DESCRIPTION = "description"; // What's the expense
         public static final String CATEGORY = "category_id";    // Food, Electronics etc
         public static final String ACCOUNT_ID = "account_id";   // Paid by which account
-        public static final String CREATED_AT = "created_at";
+        public static final String UPDATED_AT = "updated_at";
        // public static final String CURRENCY_ID = "currency_id";     // currency of expense
         public static final String DAY = "expense_day";
         public static final String MONTH = "expense_month";

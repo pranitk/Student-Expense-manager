@@ -22,6 +22,7 @@
     <string name="ic_education">&#xf19d;</string>
 
     <string name="pref_create_categories">areExpenseCategoriesAdded</string>
+    <string name="pref_expenses">expense_preferences</string>
 
     <string-array name="categories">
         <item>Shopping</item>
